@@ -44,7 +44,7 @@ public class Compte {
 	}
 
 	public void crediter(BigDecimal montant) {
-		if (montant == null || montant.signum() < 0) {
+		if (montant == null || montant.signum() <= 0) {
 			throw new IllegalArgumentException("Le montant à créditer doit être strictement positif");
 		}
 		solde = solde.add(montant);
@@ -55,14 +55,14 @@ public class Compte {
 			throw new IllegalArgumentException("Le montant à débiter doit être strictement positif");
 		}
 		BigDecimal nouveauSolde = solde.subtract(montant);
-		if (nouveauSolde.compareTo(decouvertAutorise.negate()) <= 0) {
+		if (nouveauSolde.compareTo(decouvertAutorise.negate()) < 0) {
 			throw new SoldeInsuffisantException(numero, montant);
 		}
 		solde = nouveauSolde;
 	}
 
 	public boolean estVide() {
-		return solde.equals(BigDecimal.ZERO);
+		return solde.compareTo(BigDecimal.ZERO) == 0;
 	}
 
 	public boolean estADecouvert() {
